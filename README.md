@@ -13,3 +13,21 @@ Hasil koneksi dengan HP android
 ![Praktikum 2](img/P2.jpg)
 
 ## Praktikum 3
+Hasil running di chrome
+![Praktikum 3](img/P3.jpg)
+
+## Praktikum 4
+### Langkah 1
+Pada langkah ini kita membuat text widget yang berisi teks "Nama saya Rakai, sedang belajar pemrograman mobile"
+![Praktikum 4](img/P4_1.png)
+
+### Langkah 2
+Pada langkah ini kita akan membuat image widget yang menampilkan gambar
+![Praktikum 4](img/P4_2.png)
+
+## Praktikum 5
+### Langkah 4
+Pada langkah ini kita akan merombak layout untuk menampilkan dialog widget berdasarkan pencetan tombol
+![Praktikum 5](img/P5_4.png)
+
+###
