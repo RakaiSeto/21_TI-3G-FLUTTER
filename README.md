@@ -38,3 +38,16 @@ Disini kita menampilkan text input untuk menampung nama
 Disini kita menampilkan date picker untuk menampilkan tanggal
 ![Praktikum 5](img/P5_6.png)
 
+---
+
+## Tugas
+### Tugas 1
+done
+
+### Tugas 2
+![Android](img/P2.jpg)
+
+### Tugas 3
+done
+
+### Tugas 4
