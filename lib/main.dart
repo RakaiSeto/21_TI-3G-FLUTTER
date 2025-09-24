@@ -12,7 +12,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text("Contoh TextField")),
-        body: MyLayout()
+        body: Container(
+          margin: const EdgeInsets.all(16.0),
+          child: const TextField(
+            obscureText: false,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Nama',
+            ),
+          ),
+        ),
       ),
     );
   }
