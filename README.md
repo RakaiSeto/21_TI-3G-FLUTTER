@@ -30,4 +30,11 @@ Pada langkah ini kita akan membuat image widget yang menampilkan gambar
 Pada langkah ini kita akan merombak layout untuk menampilkan dialog widget berdasarkan pencetan tombol
 ![Praktikum 5](img/P5_4.png)
 
-###
+### Langkah 5
+Disini kita menampilkan text input untuk menampung nama
+![Praktikum 5](img/P5_5.png)
+
+### Langkah 6
+Disini kita menampilkan date picker untuk menampilkan tanggal
+![Praktikum 5](img/P5_6.png)
+
