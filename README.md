@@ -51,3 +51,14 @@ done
 done
 
 ### Tugas 4
+Langkah 3 membuat flutter awal
+![Tugas 4](img/TUG_4_1.png)
+
+Langkah 4 membuat widget untuk menampilkan teks menjadi ke tengah, dan mempercantik tampilannya secara general
+![Tugas 4](img/TUG_4_2.png)
+
+Langkah 6 membuat tombol favorites
+![Tugas 4](img/TUG_4_3.png)
+
+Langkah 7 menyelesaikan page favorites dan juga fungsionalitas statenya
+![Tugas 4](img/TUG_4_4.png)
