@@ -5,49 +5,24 @@
 ---
 
 ## Praktikum 1
-hasil pembuatan project flutter
-![praktikum 1](img/P1_1.png)
+Hasil title row
+![Praktikum 1](layout_flutter/images/P1.jpg)
 
 ## Praktikum 2
-Hasil koneksi dengan HP android
-![Praktikum 2](img/P2.jpg)
+Hasil button widget
+![Praktikum 2](layout_flutter/images/P2.jpg)
 
 ## Praktikum 3
-Hasil running di chrome
-![Praktikum 3](img/P3.jpg)
+Hasil text widget
+![Praktikum 3](layout_flutter/images/P3.jpg)
 
 ## Praktikum 4
-### Langkah 1
-Pada langkah ini kita membuat text widget yang berisi teks "Nama saya Rakai, sedang belajar pemrograman mobile"
-![Praktikum 4](img/P4_1.png)
+Hasil image widget
+![Praktikum 4](layout_flutter/images/P4.jpg)
 
-### Langkah 2
-Pada langkah ini kita akan membuat image widget yang menampilkan gambar
-![Praktikum 4](img/P4_2.png)
+## Shopping List
+Home page
+![Shopping List](shopping_list/images/home.jpg)
 
-## Praktikum 5
-### Langkah 4
-Pada langkah ini kita akan merombak layout untuk menampilkan dialog widget berdasarkan pencetan tombol
-![Praktikum 5](img/P5_4.png)
-
-### Langkah 5
-Disini kita menampilkan text input untuk menampung nama
-![Praktikum 5](img/P5_5.png)
-
-### Langkah 6
-Disini kita menampilkan date picker untuk menampilkan tanggal
-![Praktikum 5](img/P5_6.png)
-
----
-
-## Tugas
-### Tugas 1
-done
-
-### Tugas 2
-![Android](img/P2.jpg)
-
-### Tugas 3
-done
-
-### Tugas 4
+Item page
+![Shopping List](shopping_list/images/item.jpg)
