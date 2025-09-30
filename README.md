@@ -18,5 +18,11 @@ Hasil text widget
 
 ## Praktikum 4
 Hasil image widget
-,![Praktikum 4](layout_flutter/images/P4.jpg)
+![Praktikum 4](layout_flutter/images/P4.jpg)
 
+## Shopping List
+Home page
+![Shopping List](shopping_list/images/home.jpg)
+
+Item page
+![Shopping List](shopping_list/images/item.jpg)
