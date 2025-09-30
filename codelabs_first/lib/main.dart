@@ -1,6 +1,5 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -178,10 +177,10 @@ class BigCard extends StatelessWidget {
 class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final style = theme.textTheme.bodyLarge!.copyWith(
-      color: theme.colorScheme.onPrimary,
-    );
+    // final theme = Theme.of(context);
+    // final style = theme.textTheme.bodyLarge!.copyWith(
+    //   color: theme.colorScheme.onPrimary,
+    // );
     var appState = context.watch<MyAppState>();
     return ListView(
       children: [
