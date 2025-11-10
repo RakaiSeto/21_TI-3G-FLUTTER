@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'geolocation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -167,6 +168,25 @@ class _FuturePageState extends State<FuturePage> {
             ElevatedButton(
               onPressed: _isLoadingParallel ? null : getMultipleData,
               child: const Text('Get Multiple Books (Parallel)'),
+            ),
+            const SizedBox(height: 40),
+            const Divider(),
+            const SizedBox(height: 20),
+            const Text(
+              'FutureBuilder Example',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LocationScreen(),
+                  ),
+                );
+              },
+              child: const Text('Open FutureBuilder Example'),
             ),
           ],
         ),

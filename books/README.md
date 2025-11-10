@@ -1,6 +1,6 @@
-# Books - Praktikum 1 & 2: Future & Async/Await
+# Books - Praktikum 1, 2 & 3: Future, Async/Await & FutureBuilder
 
-Aplikasi Flutter untuk mempelajari dasar-dasar pemrograman asynchronous menggunakan Future, async/await, dan parallel Future calls.
+Aplikasi Flutter untuk mempelajari dasar-dasar pemrograman asynchronous menggunakan Future, async/await, parallel Future calls, dan FutureBuilder.
 
 ## Praktikum 1: Single Future Call
 
@@ -57,6 +57,77 @@ final results = await Future.wait(futures);
 // Total: 2 detik (waktu terpanjang)
 ```
 
+## Praktikum 3: FutureBuilder
+
+### Konsep FutureBuilder
+- Widget yang secara otomatis mengelola Future dan rebuild UI ketika Future selesai
+- Tidak perlu `setState()` manual untuk update UI
+- Menangani 3 state: `waiting`, `done (success)`, `done (error)`
+- Lebih clean dan reactive dibandingkan manual state management
+
+### File: `lib/geolocation.dart`
+- `LocationScreen` menggunakan `FutureBuilder` untuk menampilkan koordinat GPS
+- Future diinisialisasi di `initState()` dan disimpan sebagai variabel
+- `FutureBuilder` otomatis rebuild ketika Future selesai
+
+### Struktur FutureBuilder
+
+```dart
+FutureBuilder<Position>(
+  future: position,
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return CircularProgressIndicator();
+    } else if (snapshot.connectionState == ConnectionState.done) {
+      if (snapshot.hasError) {
+        return Text('Error occurred');
+      }
+      return Text(snapshot.data.toString());
+    }
+    return Text('Waiting...');
+  },
+)
+```
+
+### Keuntungan FutureBuilder
+1. **Auto-rebuild**: UI otomatis update ketika Future selesai
+2. **No setState needed**: Tidak perlu manual `setState()` untuk update UI
+3. **Error handling built-in**: Bisa handle error langsung di builder
+4. **Clean code**: Kode lebih sederhana dan mudah dibaca
+
+### Perbedaan dengan Manual State Management
+
+**Manual (dengan setState):**
+```dart
+// Perlu setState manual
+Future<void> getData() async {
+  setState(() => _isLoading = true);
+  try {
+    final data = await fetchData();
+    setState(() {
+      _isLoading = false;
+      _result = data;
+    });
+  } catch (e) {
+    setState(() {
+      _isLoading = false;
+      _error = e;
+    });
+  }
+}
+```
+
+**Dengan FutureBuilder:**
+```dart
+// Otomatis, tidak perlu setState
+FutureBuilder(
+  future: fetchData(),
+  builder: (context, snapshot) {
+    // Auto rebuild ketika Future selesai
+  },
+)
+```
+
 ## Cara Menggunakan
 
 1. **Single Future Call:**
@@ -70,6 +141,12 @@ final results = await Future.wait(futures);
    - Menampilkan semua judul buku setelah selesai
    - **Lebih cepat** karena semua request jalan paralel
 
+3. **FutureBuilder Example:**
+   - Klik tombol "Open FutureBuilder Example"
+   - Akan membuka screen baru dengan `FutureBuilder`
+   - Menampilkan loading indicator, lalu koordinat GPS
+   - **Tidak perlu setState manual**, FutureBuilder handle semuanya
+
 ## Dependencies
 
 - `http: ^1.1.0` - Untuk HTTP requests ke Google Books API
@@ -79,4 +156,5 @@ final results = await Future.wait(futures);
 - Untuk macOS, pastikan network permission sudah ditambahkan di `macos/Runner/Release.entitlements`
 - CircularProgressIndicator akan berputar saat proses async berjalan
 - Parallel calls lebih efisien untuk multiple requests yang independen
+- FutureBuilder lebih efisien untuk Future yang tidak perlu di-trigger ulang
 - Ganti ID buku di method `getData()` dan `getMultipleData()` dengan ID buku favorit Anda
