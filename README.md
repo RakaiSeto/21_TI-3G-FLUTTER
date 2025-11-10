@@ -30,3 +30,18 @@
 -   Langkah 13 – `addPlan()`: bukan lifecycle method, tapi fungsi yang mengubah state: ambil teks, bikin `Plan` baru, update `ValueNotifier<List<Plan>>`, clear text, dan `setState()` buat trigger rebuild. Ini bagian “update state → rebuild UI” dalam siklus hidup widget. (Lifecycle terkait lain dari langkah sebelumnya: `dispose()` buat ngebersihin `TextEditingController` saat widget di‑unmount).
 
 ### Praktikum 2
+
+**2. Jelaskan mana yang dimaksud InheritedWidget pada langkah 1 tersebut! Mengapa yang digunakan InheritedNotifier?**
+[JAWAB] In langkah 1, yang dimaksud InheritedWidget adalah `PlanProvider`—dia extend `InheritedNotifier<ValueNotifier<List<Plan>>>` supaya state daftar plan bisa diakses lintas widget tree. Kita pakai `InheritedNotifier` karena selain mewarisi perilaku `InheritedWidget` (bisa di-`of(context)`), dia otomatis nge-trigger rebuild anak saat `ValueNotifier` berubah. Jadi, begitu daftar plan ke-update, semua listener kebagian refresh tanpa manual `setState` di tiap layar.
+
+**3. Jelaskan maksud dari method di langkah 3 pada praktikum tersebut! Mengapa dilakukan demikian?**
+[JAWAB] Langkah 3 bikin method `addPlan()` di `PlanCreatorScreen`. Fungsinya: ambil teks dari `TextField`, validasi biar nggak kosong, bikin objek `Plan` baru, terus update `ValueNotifier<List<Plan>>` via `PlanProvider.of(context)` dengan list yang sudah di-copy plus plan baru. Setelah itu text dibersihin dan fokus dilepas. Ini dilakukan biar penambahan plan bersifat immutable (copy list + push) sehingga notifier ngasih sinyal ke semua subscriber dan UI langsung rebuild konsisten.
+
+### Praktikum 3
+
+**2. Berdasarkan Praktikum 3 yang telah Anda lakukan, jelaskan maksud dari gambar diagram berikut ini!**
+[JAWAB] Diagram di praktikum 3 ngejelasin alur data Master Plan: `PlanProvider` sebagai sumber state global (`InheritedNotifier<ValueNotifier<List<Plan>>>`) → `PlanCreatorScreen` buat bikin dan memilih plan → `PlanScreen` buat ngatur task per plan. Tiap update task/plan bikin objek baru (immutable) yang dipush ke `ValueNotifier`, terus UI di semua screen auto-rebuild sesuai data terbaru.
+
+**3. Lakukan capture hasil dari Langkah 14 berupa GIF, kemudian jelaskan apa yang telah Anda buat!**
+![Praktikum 3](master_plan/img/praktikum3.gif)
+[JAWAB] GIF Langkah 14 nunjukin flow lengkap: user nambah plan dari halaman utama, daftar plan tampil dengan progress, pilih plan buka `PlanScreen`, lalu di sana bisa nambah task via FAB, edit deskripsi inline, dan toggle checkbox. Semua perubahan state melewati `PlanProvider` sehingga daftar plan dan task tetap konsisten lintas layar
