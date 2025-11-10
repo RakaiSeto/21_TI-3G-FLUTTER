@@ -1,6 +1,6 @@
-# Books - Praktikum 1, 2 & 3: Future, Async/Await & FutureBuilder
+# Books - Praktikum 1-5: Future, Async/Await, FutureBuilder, Async Navigation & Async Dialog
 
-Aplikasi Flutter untuk mempelajari dasar-dasar pemrograman asynchronous menggunakan Future, async/await, parallel Future calls, dan FutureBuilder.
+Aplikasi Flutter untuk mempelajari dasar-dasar pemrograman asynchronous menggunakan Future, async/await, parallel Future calls, FutureBuilder, Async Navigation, dan Async Dialog.
 
 ## Praktikum 1: Single Future Call
 
@@ -95,37 +95,137 @@ FutureBuilder<Position>(
 3. **Error handling built-in**: Bisa handle error langsung di builder
 4. **Clean code**: Kode lebih sederhana dan mudah dibaca
 
-### Perbedaan dengan Manual State Management
+## Praktikum 4: Async Navigation
 
-**Manual (dengan setState):**
+### Konsep Async Navigation
+- `Navigator.push()` mengembalikan `Future<T>`
+- Bisa menggunakan `await` untuk menunggu hasil dari screen berikutnya
+- Screen kedua bisa mengembalikan nilai menggunakan `Navigator.pop(context, value)`
+- Screen pertama menerima nilai dan bisa update state
+
+### File: `lib/navigation_first.dart` & `lib/navigation_second.dart`
+
+**NavigationFirst:**
+- Screen pertama dengan background color yang bisa berubah
+- Method `_navigateAndGetColor()` menggunakan `await Navigator.push()`
+- Menerima warna dari screen kedua dan update background
+
+**NavigationSecond:**
+- Screen kedua dengan 3 tombol warna (Red, Green, Orange)
+- Setiap tombol memanggil `Navigator.pop(context, color)`
+- Mengembalikan warna ke screen pertama
+
+### Struktur Async Navigation
+
 ```dart
-// Perlu setState manual
-Future<void> getData() async {
-  setState(() => _isLoading = true);
-  try {
-    final data = await fetchData();
+// Screen pertama
+Future<void> _navigateAndGetColor(BuildContext context) async {
+  color = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => const NavigationSecond(),
+    ),
+  ) ?? Colors.blue;  // Default color jika null
+  setState(() {});  // Update UI dengan warna baru
+}
+
+// Screen kedua
+ElevatedButton(
+  onPressed: () {
+    Navigator.pop(context, Colors.red);  // Return warna ke screen pertama
+  },
+  child: Text('Red'),
+)
+```
+
+### Keuntungan Async Navigation
+1. **Two-way communication**: Screen bisa mengirim data ke screen sebelumnya
+2. **Clean pattern**: Lebih mudah daripada callback atau global state
+3. **Type-safe**: Bisa specify tipe data yang dikembalikan
+4. **Flexible**: Bisa return berbagai tipe data (String, int, Color, dll)
+
+## Praktikum 5: Async Dialog
+
+### Konsep Async Dialog
+- `showDialog()` mengembalikan `Future<T>`
+- Bisa menggunakan `await` untuk menunggu hasil dari dialog
+- Dialog bisa mengembalikan nilai menggunakan `Navigator.pop(context, value)`
+- Lebih clean daripada callback pattern
+
+### File: `lib/navigation_dialog.dart`
+- Screen dengan background color yang bisa berubah
+- Method `_showColorDialog()` menggunakan `await showDialog()`
+- Dialog menampilkan 3 pilihan warna (Red, Green, Orange)
+- Setiap pilihan memanggil `Navigator.pop(context, color)`
+- Background screen berubah sesuai warna yang dipilih
+
+### Struktur Async Dialog
+
+```dart
+Future<void> _showColorDialog() async {
+  final result = await showDialog<Color>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Choose Color'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.color_lens, color: Colors.red),
+              title: Text('Red'),
+              onTap: () => Navigator.pop(context, Colors.red),
+            ),
+            // ... more options
+          ],
+        ),
+      );
+    },
+  );
+
+  if (result != null) {
     setState(() {
-      _isLoading = false;
-      _result = data;
-    });
-  } catch (e) {
-    setState(() {
-      _isLoading = false;
-      _error = e;
+      color = result;  // Update background color
     });
   }
 }
 ```
 
-**Dengan FutureBuilder:**
+### Keuntungan Async Dialog
+1. **Clean pattern**: Lebih mudah daripada callback
+2. **Type-safe**: Bisa specify tipe data yang dikembalikan
+3. **Flexible**: Bisa return berbagai tipe data
+4. **User-friendly**: Dialog lebih familiar untuk user input
+
+### Perbedaan dengan Callback Pattern
+
+**Callback Pattern (lama):**
 ```dart
-// Otomatis, tidak perlu setState
-FutureBuilder(
-  future: fetchData(),
-  builder: (context, snapshot) {
-    // Auto rebuild ketika Future selesai
-  },
-)
+showDialog(
+  context: context,
+  builder: (context) => AlertDialog(
+    actions: [
+      TextButton(
+        onPressed: () {
+          Navigator.pop(context);
+          onColorSelected(Colors.red);  // Callback
+        },
+        child: Text('Red'),
+      ),
+    ],
+  ),
+);
+```
+
+**Async Pattern (baru):**
+```dart
+final result = await showDialog<Color>(
+  context: context,
+  builder: (context) => AlertDialog(...),
+);
+if (result != null) {
+  setState(() => color = result);  // Langsung update
+}
 ```
 
 ## Cara Menggunakan
@@ -147,6 +247,22 @@ FutureBuilder(
    - Menampilkan loading indicator, lalu koordinat GPS
    - **Tidak perlu setState manual**, FutureBuilder handle semuanya
 
+4. **Async Navigation:**
+   - Klik tombol "Open Async Navigation Example"
+   - Akan membuka screen dengan background biru
+   - Klik "Change Color" untuk membuka screen kedua
+   - Pilih warna (Red, Green, atau Orange)
+   - Background screen pertama akan berubah sesuai warna yang dipilih
+   - **Menggunakan await untuk mendapatkan hasil dari screen kedua**
+
+5. **Async Dialog:**
+   - Klik tombol "Open Async Dialog Example"
+   - Akan membuka screen dengan background biru
+   - Klik "Change Color" untuk membuka dialog
+   - Pilih warna dari dialog (Red, Green, atau Orange)
+   - Background screen akan berubah sesuai warna yang dipilih
+   - **Menggunakan await untuk mendapatkan hasil dari dialog**
+
 ## Dependencies
 
 - `http: ^1.1.0` - Untuk HTTP requests ke Google Books API
@@ -157,4 +273,6 @@ FutureBuilder(
 - CircularProgressIndicator akan berputar saat proses async berjalan
 - Parallel calls lebih efisien untuk multiple requests yang independen
 - FutureBuilder lebih efisien untuk Future yang tidak perlu di-trigger ulang
+- Async Navigation memungkinkan komunikasi dua arah antara screens
+- Async Dialog lebih clean daripada callback pattern untuk user input
 - Ganti ID buku di method `getData()` dan `getMultipleData()` dengan ID buku favorit Anda
