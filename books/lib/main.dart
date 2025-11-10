@@ -32,6 +32,8 @@ class FuturePage extends StatefulWidget {
 class _FuturePageState extends State<FuturePage> {
   String _result = 'No data';
   bool _isLoading = false;
+  String _parallelResult = 'No parallel data';
+  bool _isLoadingParallel = false;
 
   Future<void> getData() async {
     setState(() {
@@ -65,6 +67,52 @@ class _FuturePageState extends State<FuturePage> {
     }
   }
 
+  Future<void> getMultipleData() async {
+    setState(() {
+      _isLoadingParallel = true;
+      _parallelResult = 'Loading...';
+    });
+
+    try {
+      // Memanggil beberapa Future secara paralel menggunakan Future.wait()
+      final futures = [
+        http.get(
+          Uri.parse('https://www.googleapis.com/books/v1/volumes/zyTCAlFPjgYC'),
+        ),
+        http.get(
+          Uri.parse('https://www.googleapis.com/books/v1/volumes/yqlQEQAAQBAJ'),
+        ),
+        http.get(
+          Uri.parse('https://www.googleapis.com/books/v1/volumes/nMfDDQAAQBAJ'),
+        ),
+      ];
+
+      // Future.wait() menjalankan semua Future secara paralel
+      final responses = await Future.wait(futures);
+      final titles = <String>[];
+
+      for (var response in responses) {
+        if (response.statusCode == 200) {
+          final jsonData = json.decode(response.body);
+          final title = jsonData['volumeInfo']['title'] ?? 'No title';
+          titles.add(title);
+        } else {
+          titles.add('Error: ${response.statusCode}');
+        }
+      }
+
+      setState(() {
+        _parallelResult = titles.join('\n\n');
+        _isLoadingParallel = false;
+      });
+    } catch (e) {
+      setState(() {
+        _parallelResult = 'Error: $e';
+        _isLoadingParallel = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,10 +120,16 @@ class _FuturePageState extends State<FuturePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Books App - Rakai'),
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const Text(
+              'Single Future Call',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
             if (_isLoading)
               const CircularProgressIndicator()
             else
@@ -83,14 +137,36 @@ class _FuturePageState extends State<FuturePage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   _result,
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
               ),
-            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _isLoading ? null : getData,
-              child: const Text('Get Data'),
+              child: const Text('Get Single Book Data'),
+            ),
+            const SizedBox(height: 40),
+            const Divider(),
+            const SizedBox(height: 20),
+            const Text(
+              'Parallel Future Calls (Future.wait)',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            if (_isLoadingParallel)
+              const CircularProgressIndicator()
+            else
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  _parallelResult,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ElevatedButton(
+              onPressed: _isLoadingParallel ? null : getMultipleData,
+              child: const Text('Get Multiple Books (Parallel)'),
             ),
           ],
         ),
