@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 void main() {
   runApp(const MyApp());
@@ -30,34 +31,24 @@ class FuturePage extends StatefulWidget {
 class _FuturePageState extends State<FuturePage> {
   String _result = '0';
   bool _isLoading = false;
+  Completer<int>? completer;
 
-  Future<int> returnOneAsync() async {
-    await Future.delayed(const Duration(seconds: 2));
-    return 1;
+  Future<int> getNumber() {
+    completer = Completer<int>();
+    return completer!.future;
   }
 
-  Future<int> returnTwoAsync() async {
-    await Future.delayed(const Duration(seconds: 2));
-    return 2;
-  }
-
-  Future<int> returnThreeAsync() async {
-    await Future.delayed(const Duration(seconds: 2));
-    return 3;
-  }
-
-  Future<void> count() async {
-    setState(() {
-      _isLoading = true;
-    });
-    var total = 0;
-    total += await returnOneAsync();
-    total += await returnTwoAsync();
-    total += await returnThreeAsync();
-    setState(() {
-      _result = total.toString();
-      _isLoading = false;
-    });
+  Future<void> calculate() async {
+    try {
+      await Future.delayed(const Duration(seconds: 5));
+      completer?.complete(42);
+      // Uncomment to simulate error:
+      // throw Exception('boom');
+    } catch (e) {
+      if (!(completer?.isCompleted ?? true)) {
+        completer?.completeError(e);
+      }
+    }
   }
 
   @override
@@ -80,7 +71,23 @@ class _FuturePageState extends State<FuturePage> {
               onPressed: _isLoading
                   ? null
                   : () {
-                      count();
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      getNumber()
+                          .then((value) {
+                            setState(() {
+                              _result = value.toString();
+                              _isLoading = false;
+                            });
+                          })
+                          .catchError((error) {
+                            setState(() {
+                              _result = 'An error occurred';
+                              _isLoading = false;
+                            });
+                          });
+                      calculate();
                     },
               child: const Text('GO!'),
             ),
