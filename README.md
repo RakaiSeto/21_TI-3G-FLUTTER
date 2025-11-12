@@ -62,3 +62,7 @@ Ketika tombol pada layar kedua diklik, layar kedua memanggil `Navigator.pop(cont
 
 Warna default pada langkah 5 adalah merah, hijau, dan biru. Warna‑warna tersebut dapat diganti dengan warna favorit dengan mengganti argumen pada `Navigator.pop(context, ...)` (misalnya `Colors.deepPurple`, `Colors.teal`, `Colors.amber`).
 ![Praktikum 16](books/img/Soal16.gif)
+
+**17. Cobalah klik setiap button, apa yang terjadi ? Mengapa demikian ?**
+Ketika salah satu tombol pada dialog diklik, dialog mengeksekusi `Navigator.pop(context, <Color>)` dengan nilai warna yang dipilih. Metode asynchronous `_showColorDialog(context)` melakukan `await showDialog<Color>(...)` sehingga menerima kembali nilai warna tersebut setelah dialog ditutup. Nilai yang diterima kemudian disimpan pada variabel `color` dan `setState()` dipanggil untuk memicu rebuild, sehingga warna latar belakang layar berubah sesuai pilihan. Perilaku ini terjadi karena `showDialog` mengembalikan `Future<T?>` yang menyampaikan hasil interaksi pengguna kepada pemanggil.
+![Praktikum 17](books/img/Soal17.gif)
