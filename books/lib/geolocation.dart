@@ -1,4 +1,3 @@
-// ignore_for_file: uri_does_not_exist, undefined_import, undefined_identifier
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -10,19 +9,15 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-  dynamic myPosition;
+  Future<Position>? position;
 
   @override
   void initState() {
     super.initState();
-    getPosition().then((pos) {
-      setState(() {
-        myPosition = pos;
-      });
-    });
+    position = getPosition();
   }
 
-  Future<dynamic> getPosition() async {
+  Future<Position> getPosition() async {
     await Geolocator.requestPermission();
     // Delay added to visualize loading per praktikum 6 step 8
     await Future.delayed(const Duration(seconds: 3));
@@ -33,19 +28,23 @@ class _LocationScreenState extends State<LocationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Current Location - Rakai')),
-      body: Center(
-        child: myPosition == null
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 12),
-                  Text('Fetching position...'),
-                ],
-              )
-            : Text(
-                'Latitude: ${myPosition!.latitude}, Longitude: ${myPosition!.longitude}',
-              ),
+      body: FutureBuilder<Position>(
+        future: position,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return const Center(child: Text('Something terrible happened!'));
+            }
+            final pos = snapshot.data!;
+            return Center(
+              child: Text('Latitude: ${pos.latitude}, Longitude: ${pos.longitude}'),
+            );
+          } else {
+            return const Center(child: Text(''));
+          }
+        },
       ),
     );
   }

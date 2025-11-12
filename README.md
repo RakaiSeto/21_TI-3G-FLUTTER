@@ -49,3 +49,10 @@ Secara umum tidak. Pada eksekusi melalui browser (Flutter Web), akses lokasi men
 
 ![Praktikum 11](books/img/Soal11.gif)
 
+**13. Apakah ada perbedaan UI dengan praktikum sebelumnya? Mengapa demikian?**
+Ya. Dengan `FutureBuilder`, tampilan loading dan hasil data dikelola oleh widget itu sendiri berdasarkan `snapshot.connectionState` dan `snapshot.data/error`. UI menjadi lebih reaktif dan “clean” karena tidak membutuhkan pemanggilan `setState` manual untuk setiap perubahan state Future; rebuild hanya terjadi pada subtree yang dibungkus `FutureBuilder`.
+![Praktikum 11](books/img/Soal11.gif)
+
+**14. Apakah ada perbedaan UI dengan langkah sebelumnya? Mengapa demikian?**
+Ada. Setelah penambahan blok error handling pada `FutureBuilder`, UI kini dapat menampilkan pesan kesalahan ketika `snapshot.hasError` bernilai true. Sebelumnya, cabang ini belum ada sehingga UI hanya menampilkan hasil posisi atau indikator loading. Penanganan ini membuat UI lebih robust terhadap kegagalan asynchronous.
+![Praktikum 11](books/img/Soal11.gif)
