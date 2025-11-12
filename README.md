@@ -32,3 +32,14 @@ Pada langkah 2, alur yang ditunjukkan merupakan skenario keberhasilan (happy pat
 Pada langkah 1 digunakan `FutureGroup` (dari paket `async`) untuk mengelola sekumpulan `Future` yang dijalankan secara paralel. Setiap `Future` didaftarkan ke dalam grup, dan ketika seluruhnya selesai, grup menghasilkan sebuah `List<int>` yang kemudian diproses (misalnya dijumlahkan). Pendekatan ini memberi kontrol lebih terhadap manajemen kumpulan tugas asynchronous, seperti menambah item secara eksplisit dan memproses hasil kolektifnya.
 
 Pada langkah 4, pendekatan yang sama (eksekusi paralel) diwujudkan dengan API inti Dart, yaitu `Future.wait<int>([ ... ])`. Metode ini lebih ringkas dan idiomatis, langsung mengeksekusi semua `Future` secara bersamaan dan mengembalikan `List<int>` ketika seluruhnya selesai. Perbedaan utamanya terletak pada cara manajemen: `FutureGroup` adalah utilitas manajemen kumpulan `Future`, sedangkan `Future.wait` merupakan cara standar dan sederhana untuk menunggu banyak `Future` secara paralel dengan sedikit kode dan dependensi.
+
+**9. Capture GIF**
+![Praktikum 9](books/img/Soal9.gif)
+
+**10. Panggil method handleError() tersebut di ElevatedButton, lalu run. Apa hasilnya? Jelaskan perbedaan kode langkah 1 dan 4!**
+Ketika tombol dijalankan, aplikasi menampilkan indikator pemuatan selama ±2 detik. Setelah `returnError()` melempar pengecualian, teks hasil pada UI berubah menjadi pesan galat (misal: `Exception: Something terrible happened!`), indikator pemuatan dihentikan, dan log konsol menampilkan `Complete`. Dengan demikian, alur eksekusi dan pemulihan UI berjalan terkendali meskipun terjadi error.
+
+Perbedaan langkah 1 dan 4 adalah gaya penanganan error:
+
+-   Langkah 1 menggunakan rantai callback `then(...).catchError(...).whenComplete(...)`. Error diproses pada callback `catchError`, sedangkan pembersihan status dilakukan di `whenComplete`. Gaya ini bersifat callback‑based.
+-   Langkah 4 menggunakan `async/await` dengan blok `try/catch/finally` pada fungsi `handleError()`. Error ditangani di `catch`, dan pembersihan status dijamin dieksekusi di `finally`. Gaya ini lebih terstruktur, mudah dibaca, dan lebih dekat dengan alur sinkron, sehingga memudahkan pemeliharaan.

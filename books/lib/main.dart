@@ -68,6 +68,12 @@ class _FuturePageState extends State<FuturePage> {
     });
   }
 
+  // Praktikum 5: error handling
+  Future<void> returnError() async {
+    await Future.delayed(const Duration(seconds: 2));
+    throw Exception('Something terrible happened!');
+  }
+
   Future<int> getNumber() {
     completer = Completer<int>();
     return completer!.future;
@@ -83,6 +89,28 @@ class _FuturePageState extends State<FuturePage> {
       if (!(completer?.isCompleted ?? true)) {
         completer?.completeError(e);
       }
+    }
+  }
+
+  Future<void> handleError() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      await returnError();
+      setState(() {
+        _result = 'Success';
+      });
+    } catch (error) {
+      setState(() {
+        _result = error.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+      // ignore: avoid_print
+      print('Complete');
     }
   }
 
@@ -106,7 +134,20 @@ class _FuturePageState extends State<FuturePage> {
               onPressed: _isLoading
                   ? null
                   : () {
-                      returnFutures();
+                      // then/catchError style (kept for reference; final flow uses handleError())
+                      // setState(() { _isLoading = true; });
+                      // returnError()
+                      //     .then((_) {
+                      //       setState(() { _result = 'Success'; });
+                      //     })
+                      //     .catchError((onError) {
+                      //       setState(() { _result = onError.toString(); });
+                      //     })
+                      //     .whenComplete(() {
+                      //       setState(() { _isLoading = false; });
+                      //       print('Complete');
+                      //     });
+                      handleError();
                     },
               child: const Text('GO!'),
             ),
