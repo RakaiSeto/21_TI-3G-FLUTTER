@@ -56,3 +56,9 @@ Ya. Dengan `FutureBuilder`, tampilan loading dan hasil data dikelola oleh widget
 **14. Apakah ada perbedaan UI dengan langkah sebelumnya? Mengapa demikian?**
 Ada. Setelah penambahan blok error handling pada `FutureBuilder`, UI kini dapat menampilkan pesan kesalahan ketika `snapshot.hasError` bernilai true. Sebelumnya, cabang ini belum ada sehingga UI hanya menampilkan hasil posisi atau indikator loading. Penanganan ini membuat UI lebih robust terhadap kegagalan asynchronous.
 ![Praktikum 11](books/img/Soal11.gif)
+
+**16. Cobalah klik setiap button, apa yang terjadi ? Mengapa demikian ? Gantilah 3 warna pada langkah 5 dengan warna favorit Anda!**
+Ketika tombol pada layar kedua diklik, layar kedua memanggil `Navigator.pop(context, <Color>)` dengan warna yang dipilih. Layar pertama sebelumnya memanggil metode asynchronous `_navigateAndGetColor(...)` dan melakukan `await` pada `Navigator.push(...)`. Setelah route ditutup, nilai warna yang dikembalikan dipakai untuk memperbarui state (`setState`) sehingga warna latar belakang layar pertama berubah sesuai pilihan. Mekanisme ini bekerja karena `Navigator.push` mengembalikan `Future<T?>` yang menyimpan hasil dari `Navigator.pop`.
+
+Warna default pada langkah 5 adalah merah, hijau, dan biru. Warna‑warna tersebut dapat diganti dengan warna favorit dengan mengganti argumen pada `Navigator.pop(context, ...)` (misalnya `Colors.deepPurple`, `Colors.teal`, `Colors.amber`).
+![Praktikum 16](books/img/Soal16.gif)
