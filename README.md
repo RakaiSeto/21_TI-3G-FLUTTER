@@ -43,3 +43,9 @@ Perbedaan langkah 1 dan 4 adalah gaya penanganan error:
 
 -   Langkah 1 menggunakan rantai callback `then(...).catchError(...).whenComplete(...)`. Error diproses pada callback `catchError`, sedangkan pembersihan status dilakukan di `whenComplete`. Gaya ini bersifat callback‑based.
 -   Langkah 4 menggunakan `async/await` dengan blok `try/catch/finally` pada fungsi `handleError()`. Error ditangani di `catch`, dan pembersihan status dijamin dieksekusi di `finally`. Gaya ini lebih terstruktur, mudah dibaca, dan lebih dekat dengan alur sinkron, sehingga memudahkan pemeliharaan.
+
+**12. Apakah Anda mendapatkan koordinat GPS ketika run di browser? Mengapa demikian?**
+Secara umum tidak. Pada eksekusi melalui browser (Flutter Web), akses lokasi mengandalkan HTML5 Geolocation API yang hanya berfungsi pada secure context (HTTPS atau `localhost`) dan wajib memperoleh persetujuan pengguna. Tanpa konteks aman atau bila izin ditolak, plugin tidak dapat mengembalikan koordinat. Selain itu, akurasi setara GPS perangkat tidak tersedia pada browser; data lokasi (jika ada) biasanya berupa perkiraan berbasis Wi‑Fi/IP sehingga tidak seakurat pada perangkat/emulator.
+
+![Praktikum 11](books/img/Soal11.gif)
+
