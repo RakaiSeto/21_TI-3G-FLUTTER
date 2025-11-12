@@ -24,3 +24,11 @@ Langkah 2 memperkenalkan penggunaan `Completer<int>` untuk membuat sebuah `Futur
 
 **6. Jelaskan maksud perbedaan kode langkah 2 dengan langkah 5-6 tersebut!**
 Pada langkah 2, alur yang ditunjukkan merupakan skenario keberhasilan (happy path) semata: setelah penundaan, `Future` diselesaikan dengan `complete(42)` dan callback `then(...)` memperbarui UI. Pada langkah 5–6, alur tersebut dilengkapi dengan penanganan kesalahan: `calculate()` dibungkus dengan blok `try/catch` dan apabila terjadi kegagalan, `completer.completeError(e)` dipanggil; di sisi pemanggil, method `onPressed` menambahkan `.catchError(...)` untuk menampilkan pesan kesalahan pada UI. Dengan demikian, perbedaannya terletak pada keberadaan mekanisme propagasi dan penanganan error pada langkah 5–6 yang tidak ada pada langkah 2.
+
+**7. Capture GIF**
+![Praktikum 7](books/img/Soal7.gif)
+
+**8. Jelaskan maksud perbedaan kode langkah 1 dan 4!**
+Pada langkah 1 digunakan `FutureGroup` (dari paket `async`) untuk mengelola sekumpulan `Future` yang dijalankan secara paralel. Setiap `Future` didaftarkan ke dalam grup, dan ketika seluruhnya selesai, grup menghasilkan sebuah `List<int>` yang kemudian diproses (misalnya dijumlahkan). Pendekatan ini memberi kontrol lebih terhadap manajemen kumpulan tugas asynchronous, seperti menambah item secara eksplisit dan memproses hasil kolektifnya.
+
+Pada langkah 4, pendekatan yang sama (eksekusi paralel) diwujudkan dengan API inti Dart, yaitu `Future.wait<int>([ ... ])`. Metode ini lebih ringkas dan idiomatis, langsung mengeksekusi semua `Future` secara bersamaan dan mengembalikan `List<int>` ketika seluruhnya selesai. Perbedaan utamanya terletak pada cara manajemen: `FutureGroup` adalah utilitas manajemen kumpulan `Future`, sedangkan `Future.wait` merupakan cara standar dan sederhana untuk menunggu banyak `Future` secara paralel dengan sedikit kode dan dependensi.

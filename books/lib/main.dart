@@ -33,6 +33,41 @@ class _FuturePageState extends State<FuturePage> {
   bool _isLoading = false;
   Completer<int>? completer;
 
+  // Praktikum 4 helpers: run in parallel
+  Future<int> returnOneAsync() async {
+    await Future.delayed(const Duration(seconds: 3));
+    return 1;
+  }
+
+  Future<int> returnTwoAsync() async {
+    await Future.delayed(const Duration(seconds: 3));
+    return 2;
+  }
+
+  Future<int> returnThreeAsync() async {
+    await Future.delayed(const Duration(seconds: 3));
+    return 3;
+  }
+
+  Future<void> returnFutures() async {
+    setState(() {
+      _isLoading = true;
+    });
+    final values = await Future.wait<int>([
+      returnOneAsync(),
+      returnTwoAsync(),
+      returnThreeAsync(),
+    ]);
+    var total = 0;
+    for (final element in values) {
+      total += element;
+    }
+    setState(() {
+      _result = total.toString();
+      _isLoading = false;
+    });
+  }
+
   Future<int> getNumber() {
     completer = Completer<int>();
     return completer!.future;
@@ -71,23 +106,7 @@ class _FuturePageState extends State<FuturePage> {
               onPressed: _isLoading
                   ? null
                   : () {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      getNumber()
-                          .then((value) {
-                            setState(() {
-                              _result = value.toString();
-                              _isLoading = false;
-                            });
-                          })
-                          .catchError((error) {
-                            setState(() {
-                              _result = 'An error occurred';
-                              _isLoading = false;
-                            });
-                          });
-                      calculate();
+                      returnFutures();
                     },
               child: const Text('GO!'),
             ),
