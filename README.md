@@ -32,3 +32,14 @@ Keyword `yield*` digunakan untuk mendelegasikan pembuatan event ke stream lain a
 **Soal 5: Jelaskan perbedaan menggunakan listen dan await for (langkah 9 dan 13)!**
 - **listen**: Metode ini mendaftarkan callback yang akan dipanggil setiap kali stream memancarkan event baru. Eksekusi kode di bawah `listen` akan terus berjalan tanpa menunggu stream selesai (non-blocking). Kita perlu mengelola subscription (misalnya membatalkannya) secara manual jika diperlukan.
 - **await for**: Ini adalah konstruksi looping asynchronous. Loop ini akan menunggu setiap event dari stream dan memprosesnya satu per satu. Eksekusi kode di dalam fungsi `async` akan "berhenti" (await) di loop ini sampai stream ditutup atau break dipanggil. Ini membuat kode terlihat lebih prosedural dan mudah dibaca untuk alur yang berurutan.
+
+**Soal 6: Jelaskan maksud kode langkah 8 dan 10 tersebut!**
+- **Langkah 8 (`initState`)**: Menginisialisasi `NumberStream` dan controller-nya, kemudian mendengarkan (listen) stream tersebut. Setiap kali ada event (angka baru) yang masuk ke stream, callback `listen` akan dijalankan dan `setState` dipanggil untuk memperbarui variabel `lastNumber` dan UI.
+- **Langkah 10 (`addRandomNumber`)**: Membuat angka acak antara 0-9 menggunakan `Random`. Angka ini kemudian ditambahkan ke sink dari `NumberStream` menggunakan method `addNumberToSink`. Ini akan memicu aliran data baru di stream yang kemudian ditangkap oleh listener di `initState`.
+
+**Soal 7: Jelaskan maksud kode langkah 13 sampai 15 tersebut!**
+- **Langkah 13**: Menambahkan method `addError` pada class `NumberStream` yang berfungsi untuk mengirimkan event error ke sink stream menggunakan `controller.sink.addError`.
+- **Langkah 14**: Memodifikasi listener pada `initState` untuk menangani error menggunakan properti `onError`. Jika terjadi error pada stream, callback ini akan dijalankan dan `lastNumber` diubah menjadi -1.
+- **Langkah 15**: Memodifikasi `addRandomNumber` agar jika angka acak yang dihasilkan kurang dari 5, angka tersebut ditambahkan ke stream. Namun jika 5 atau lebih, maka `addError` dipanggil untuk memicu error pada stream.
+![Soal 7](stream_rakai/img/prak-2.gif)
+
