@@ -60,4 +60,7 @@ Error tersebut terjadi karena secara default, `Stream` di Dart adalah "single-su
 
 **Soal 11: Jelaskan mengapa hal itu bisa terjadi ?**
 Hal itu terjadi karena kita telah mengubah stream menjadi "broadcast stream" menggunakan method `asBroadcastStream()`. Broadcast stream memungkinkan banyak listener untuk mendengarkan stream yang sama secara bersamaan. Setiap kali stream memancarkan event, semua listener yang terdaftar akan menerima event tersebut. Dalam kasus ini, kedua subscription (`subscription` dan `subscription2`) menerima event yang sama dan menambahkannya ke variabel `values`, sehingga setiap angka muncul dua kali (atau lebih, tergantung logika penambahannya) di tampilan.
-![Soal 11](stream_rakai/img/prak-5.gif)
+**Soal 12: Jelaskan maksud kode pada langkah 3 dan 7 !**
+- **Langkah 3**: Membuat class `NumberStream` yang memiliki method `getNumbers()`. Method ini mengembalikan `Stream<int>` yang menghasilkan angka integer secara periodik setiap 1 detik. `Stream.periodic` digunakan untuk membuat stream yang memancarkan event berulang kali dengan interval waktu tertentu.
+- **Langkah 7**: Menggunakan widget `StreamBuilder` untuk membangun UI yang merespons perubahan pada stream. `StreamBuilder` mendengarkan stream yang diberikan (`numberStream`) dan membangun ulang widget setiap kali ada event baru (snapshot). Jika snapshot memiliki data (`snapshot.hasData`), maka data tersebut (angka) ditampilkan dalam widget `Text`. Jika terjadi error, pesan error dicetak ke konsol. Ini menyederhanakan proses mendengarkan stream dan memperbarui UI dibandingkan menggunakan `setState` secara manual.
+![Soal 12](streambuilder_rakai/img/prak-6.gif)
