@@ -43,3 +43,9 @@ Keyword `yield*` digunakan untuk mendelegasikan pembuatan event ke stream lain a
 - **Langkah 15**: Memodifikasi `addRandomNumber` agar jika angka acak yang dihasilkan kurang dari 5, angka tersebut ditambahkan ke stream. Namun jika 5 atau lebih, maka `addError` dipanggil untuk memicu error pada stream.
 ![Soal 7](stream_rakai/img/prak-2.gif)
 
+**Soal 8: Jelaskan maksud kode langkah 1-3 tersebut!**
+Kode tersebut menerapkan `StreamTransformer` untuk memanipulasi data stream sebelum diterima oleh listener.
+- **Langkah 1**: Mendeklarasikan variabel `transformer` bertipe `StreamTransformer`.
+- **Langkah 2**: Menginisialisasi `transformer` dengan `StreamTransformer<int, int>.fromHandlers`. Handler `handleData` akan mengambil data integer dari stream, mengalikannya dengan 10, lalu mengirimkannya ke sink baru. Handler `handleError` akan menangkap error dan mengirimkan nilai -1. Handler `handleDone` akan menutup sink saat stream selesai.
+- **Langkah 3**: Menggunakan method `transform(transformer)` pada stream sebelum melakukan `listen`. Ini berarti data yang diterima oleh listener adalah data yang sudah diproses oleh transformer (dikali 10 atau -1 jika error).
+![Soal 8](stream_rakai/img/prak-3.gif)
