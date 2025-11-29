@@ -64,3 +64,8 @@ Hal itu terjadi karena kita telah mengubah stream menjadi "broadcast stream" men
 - **Langkah 3**: Membuat class `NumberStream` yang memiliki method `getNumbers()`. Method ini mengembalikan `Stream<int>` yang menghasilkan angka integer secara periodik setiap 1 detik. `Stream.periodic` digunakan untuk membuat stream yang memancarkan event berulang kali dengan interval waktu tertentu.
 - **Langkah 7**: Menggunakan widget `StreamBuilder` untuk membangun UI yang merespons perubahan pada stream. `StreamBuilder` mendengarkan stream yang diberikan (`numberStream`) dan membangun ulang widget setiap kali ada event baru (snapshot). Jika snapshot memiliki data (`snapshot.hasData`), maka data tersebut (angka) ditampilkan dalam widget `Text`. Jika terjadi error, pesan error dicetak ke konsol. Ini menyederhanakan proses mendengarkan stream dan memperbarui UI dibandingkan menggunakan `setState` secara manual.
 ![Soal 12](streambuilder_rakai/img/prak-6.gif)
+
+**Soal 13: Jelaskan maksud praktikum ini ! Dimanakah letak konsep pola BLoC-nya ?**
+- **Langkah 13**: Praktikum ini mengeksplorasi konsep pola BLoC (Business Logic Component) dalam Flutter. BLoC adalah pola arsitektur yang memisahkan logika bisnis dari UI dan memungkinkan logika bisnis untuk diakses oleh beberapa UI tanpa harus mengetahui detail implementasinya. Dalam praktikum ini, kita menggunakan BLoC untuk mengelola logika pembuatan angka acak dan menampilkannya di UI.
+
+![Soal 13](bloc_random_rakai/img/prak-8.gif)
