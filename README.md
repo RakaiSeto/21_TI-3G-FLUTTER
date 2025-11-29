@@ -27,7 +27,7 @@ final List<Color> colors = [
 Keyword `yield*` digunakan untuk mendelegasikan pembuatan event ke stream lain atau iterable lain. Dalam kasus ini, `yield*` meneruskan nilai-nilai yang dihasilkan oleh `Stream.periodic`. Tanpa `yield*`, kita harus melakukan loop manual dan men-yield setiap item satu per satu. `yield*` membuat kode lebih ringkas saat kita ingin mengembalikan seluruh elemen dari stream atau iterable lain.
 
 **Soal 4: Capture hasil praktikum Anda berupa GIF dan lampirkan di README.**
-![Soal 4](stream_rakai/img/Stream-Rakai.gif)
+![Soal 4](stream_rakai/img/prak-1.gif)
 
 **Soal 5: Jelaskan perbedaan menggunakan listen dan await for (langkah 9 dan 13)!**
 - **listen**: Metode ini mendaftarkan callback yang akan dipanggil setiap kali stream memancarkan event baru. Eksekusi kode di bawah `listen` akan terus berjalan tanpa menunggu stream selesai (non-blocking). Kita perlu mengelola subscription (misalnya membatalkannya) secara manual jika diperlukan.
@@ -54,3 +54,10 @@ Kode tersebut menerapkan `StreamTransformer` untuk memanipulasi data stream sebe
 - **Langkah 2**: Pada langkah ini, kita melakukan subscribe ke stream menggunakan method `listen`. Kita juga mendaftarkan callback untuk menangani event error (`onError`) dan ketika stream selesai (`onDone`). `listen` mengembalikan objek `StreamSubscription` yang kita simpan dalam variabel `subscription`.
 - **Langkah 6**: Pada method `dispose`, kita memanggil `subscription.cancel()`. Ini sangat penting untuk menghentikan langganan stream ketika widget dihancurkan, sehingga mencegah kebocoran memori (memory leak) dan error karena mencoba memperbarui UI yang sudah tidak ada.
 - **Langkah 8**: Pada method `addRandomNumber`, kita menambahkan pengecekan `!numberStreamController.isClosed` sebelum menambahkan data ke sink. Ini memastikan kita tidak mencoba menambahkan data ke stream yang sudah ditutup, yang akan menyebabkan exception 'Bad state: Cannot add new events after calling close'. Jika stream sudah ditutup, kita mengubah state `lastNumber` menjadi -1.
+
+**Soal 10: Jelaskan mengapa error itu bisa terjadi ?**
+Error tersebut terjadi karena secara default, `Stream` di Dart adalah "single-subscription". Artinya, stream tersebut hanya boleh memiliki satu pendengar (listener) pada satu waktu. Jika kita mencoba melakukan `listen` lagi pada stream yang sudah memiliki listener aktif, maka akan muncul error `Bad state: Stream has already been listened to`.
+
+**Soal 11: Jelaskan mengapa hal itu bisa terjadi ?**
+Hal itu terjadi karena kita telah mengubah stream menjadi "broadcast stream" menggunakan method `asBroadcastStream()`. Broadcast stream memungkinkan banyak listener untuk mendengarkan stream yang sama secara bersamaan. Setiap kali stream memancarkan event, semua listener yang terdaftar akan menerima event tersebut. Dalam kasus ini, kedua subscription (`subscription` dan `subscription2`) menerima event yang sama dan menambahkannya ke variabel `values`, sehingga setiap angka muncul dua kali (atau lebih, tergantung logika penambahannya) di tampilan.
+![Soal 11](stream_rakai/img/prak-5.gif)
