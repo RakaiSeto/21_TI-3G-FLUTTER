@@ -49,3 +49,8 @@ Kode tersebut menerapkan `StreamTransformer` untuk memanipulasi data stream sebe
 - **Langkah 2**: Menginisialisasi `transformer` dengan `StreamTransformer<int, int>.fromHandlers`. Handler `handleData` akan mengambil data integer dari stream, mengalikannya dengan 10, lalu mengirimkannya ke sink baru. Handler `handleError` akan menangkap error dan mengirimkan nilai -1. Handler `handleDone` akan menutup sink saat stream selesai.
 - **Langkah 3**: Menggunakan method `transform(transformer)` pada stream sebelum melakukan `listen`. Ini berarti data yang diterima oleh listener adalah data yang sudah diproses oleh transformer (dikali 10 atau -1 jika error).
 ![Soal 8](stream_rakai/img/prak-3.gif)
+
+**Soal 9: Jelaskan maksud kode langkah 2, 6 dan 8 tersebut!**
+- **Langkah 2**: Pada langkah ini, kita melakukan subscribe ke stream menggunakan method `listen`. Kita juga mendaftarkan callback untuk menangani event error (`onError`) dan ketika stream selesai (`onDone`). `listen` mengembalikan objek `StreamSubscription` yang kita simpan dalam variabel `subscription`.
+- **Langkah 6**: Pada method `dispose`, kita memanggil `subscription.cancel()`. Ini sangat penting untuk menghentikan langganan stream ketika widget dihancurkan, sehingga mencegah kebocoran memori (memory leak) dan error karena mencoba memperbarui UI yang sudah tidak ada.
+- **Langkah 8**: Pada method `addRandomNumber`, kita menambahkan pengecekan `!numberStreamController.isClosed` sebelum menambahkan data ke sink. Ini memastikan kita tidak mencoba menambahkan data ke stream yang sudah ditutup, yang akan menyebabkan exception 'Bad state: Cannot add new events after calling close'. Jika stream sudah ditutup, kita mengubah state `lastNumber` menjadi -1.
