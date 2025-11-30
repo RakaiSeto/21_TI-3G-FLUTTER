@@ -39,3 +39,7 @@ Pizza Price: 12.5
 Pizza Image: img.png
 ```
 ![alt text](master_plan/img/prak-2.png)
+**Soal 5: Jelaskan maksud kode langkah 5 tersebut!**
+Kode langkah 5 adalah mendefinisikan konstanta untuk setiap kunci (key) JSON dan menggunakannya dalam method `fromJson` dan `toJson`.
+- **Lebih Safe (Aman)**: Menggunakan konstanta menghindari kesalahan pengetikan (typo) yang sering terjadi jika kita menulis string literal berulang kali. Jika kita salah mengetik nama variabel konstanta, compiler akan memberitahu error sebelum aplikasi dijalankan (compile-time error), sedangkan salah ketik string literal baru ketahuan saat runtime.
+- **Lebih Maintainable (Mudah Dipelihara)**: Jika suatu saat nama key JSON berubah dari sisi server (misalnya dari `pizzaName` menjadi `name`), kita hanya perlu mengubah nilai string pada deklarasi konstanta di satu tempat saja. Semua bagian kode yang menggunakan konstanta tersebut akan otomatis menggunakan nilai yang baru, tanpa perlu mencari dan mengganti satu per satu di seluruh file.
