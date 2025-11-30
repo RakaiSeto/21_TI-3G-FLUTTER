@@ -55,3 +55,9 @@ Kode langkah 5 adalah mendefinisikan konstanta untuk setiap kunci (key) JSON dan
     - `prefs.clear()`: Menghapus semua data yang tersimpan di SharedPreferences aplikasi ini.
     - `setState(...)`: Mereset variabel `_appCounter` menjadi 0 dan memperbarui tampilan, sehingga pengguna melihat counter kembali ke angka 0.
 ![Soal 6](master_plan/img/prak-4.gif)
+
+**Soal 7: Jelaskan maksud kode langkah 10 tersebut!**
+- `getPaths()` dipanggil di dalam `initState()`.
+- `initState()` adalah method yang pertama kali dipanggil ketika widget dibuat (sebelum `build`).
+- Dengan memanggil `getPaths()` di sini, aplikasi akan langsung memulai proses pengambilan path direktori (dokumen dan temporary) segera setelah aplikasi dijalankan.
+- Karena `getPaths()` bersifat *asynchronous* (menggunakan `await`), hasil path tidak langsung tersedia. Namun, setelah path didapatkan, `setState` akan dipanggil untuk memperbarui UI dengan path yang benar.
