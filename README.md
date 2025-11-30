@@ -24,6 +24,9 @@ Saya telah membuat fitur untuk menampilkan daftar tugas (tasks) dalam sebuah ren
     - Saat checkbox dicentang/hapus, status `complete` pada tugas yang bersangkutan diperbarui.
     - Saat deskripsi diubah, properti `description` pada tugas diperbarui.
 - **State Management**: Setiap perubahan data memicu `setState`, yang menyebabkan UI dibangun ulang (rebuild) untuk mencerminkan data `plan` yang baru.
+
+# Praktikum 2: Handle kompatibilitas data JSON
+
 **Soal 4: Lakukan capture hasil dari Langkah 14 berupa GIF, kemudian jelaskan apa yang telah Anda buat!**
 Saya telah membuat model `Pizza` yang mampu menangani ketidaksesuaian tipe data dari JSON.
 - **Masalah**: JSON seringkali mengirimkan data yang tidak konsisten, misalnya angka dikirim sebagai string (`"123"`), atau field yang seharusnya ada ternyata `null`.
@@ -39,10 +42,15 @@ Pizza Price: 12.5
 Pizza Image: img.png
 ```
 ![alt text](master_plan/img/prak-2.png)
+
+# Praktikum 3: Menangani error JSON
+
 **Soal 5: Jelaskan maksud kode langkah 5 tersebut!**
 Kode langkah 5 adalah mendefinisikan konstanta untuk setiap kunci (key) JSON dan menggunakannya dalam method `fromJson` dan `toJson`.
 - **Lebih Safe (Aman)**: Menggunakan konstanta menghindari kesalahan pengetikan (typo) yang sering terjadi jika kita menulis string literal berulang kali. Jika kita salah mengetik nama variabel konstanta, compiler akan memberitahu error sebelum aplikasi dijalankan (compile-time error), sedangkan salah ketik string literal baru ketahuan saat runtime.
 - **Lebih Maintainable (Mudah Dipelihara)**: Jika suatu saat nama key JSON berubah dari sisi server (misalnya dari `pizzaName` menjadi `name`), kita hanya perlu mengubah nilai string pada deklarasi konstanta di satu tempat saja. Semua bagian kode yang menggunakan konstanta tersebut akan otomatis menggunakan nilai yang baru, tanpa perlu mencari dan mengganti satu per satu di seluruh file.
+
+# Praktikum 4: SharedPreferences
 
 **Soal 6: Jelaskan maksud kode langkah 5 dan 13 tersebut!**
 - **Langkah 5 (`readAndWritePreference`)**: Method ini berfungsi untuk membaca dan menulis data ke `SharedPreferences`.
@@ -56,11 +64,15 @@ Kode langkah 5 adalah mendefinisikan konstanta untuk setiap kunci (key) JSON dan
     - `setState(...)`: Mereset variabel `_appCounter` menjadi 0 dan memperbarui tampilan, sehingga pengguna melihat counter kembali ke angka 0.
 ![Soal 6](master_plan/img/prak-4.gif)
 
+# Praktikum 5: Akses filesystem dengan path_provider
+
 **Soal 7: Jelaskan maksud kode langkah 10 tersebut!**
 - `getPaths()` dipanggil di dalam `initState()`.
 - `initState()` adalah method yang pertama kali dipanggil ketika widget dibuat (sebelum `build`).
 - Dengan memanggil `getPaths()` di sini, aplikasi akan langsung memulai proses pengambilan path direktori (dokumen dan temporary) segera setelah aplikasi dijalankan.
 - Karena `getPaths()` bersifat *asynchronous* (menggunakan `await`), hasil path tidak langsung tersedia. Namun, setelah path didapatkan, `setState` akan dipanggil untuk memperbarui UI dengan path yang benar.
+
+# Praktikum 6: Akses filesystem dengan direktori
 
 **Soal 8: Jelaskan maksud kode langkah 13 dan 14 tersebut!**
 (Catatan: Soal ini sepertinya merujuk pada langkah pembuatan `writeFile` dan `readFile` serta pemanggilannya, meskipun nomor langkah di soal mungkin berbeda dengan modul).
@@ -72,3 +84,15 @@ Kode langkah 5 adalah mendefinisikan konstanta untuk setiap kunci (key) JSON dan
     - `myFile.readAsString()`: Membaca isi file `pizzas.txt` sebagai string.
     - `setState(...)`: Memperbarui variabel `fileText` dengan isi file yang dibaca, sehingga teks tersebut muncul di layar.
 - **Kesimpulan**: Kedua method ini mendemonstrasikan bagaimana aplikasi Flutter dapat menyimpan data persisten ke dalam sistem file perangkat, yang berguna untuk menyimpan data yang lebih besar atau terstruktur dibandingkan `SharedPreferences`.
+
+# Praktikum 7: Menyimpan data dengan enkripsi/dekripsi
+
+**Soal 9: Jelaskan maksud kode langkah 5 dan 6 tersebut!**
+- **Langkah 5 (`writeToSecureStorage`)**:
+    - `storage.write(key: myKey, value: pwdController.text)`: Menyimpan data (password/teks) yang diinputkan pengguna ke dalam penyimpanan aman (`Secure Storage`).
+    - Data yang disimpan akan dienkripsi secara otomatis oleh library `flutter_secure_storage` (menggunakan Keystore di Android atau Keychain di iOS), sehingga aman dari akses yang tidak sah.
+- **Langkah 6 (`readFromSecureStorage`)**:
+    - `storage.read(key: myKey)`: Membaca kembali data yang telah disimpan menggunakan kunci (`key`) yang sama (`myKey`).
+    - Data yang dibaca akan didekripsi kembali menjadi string aslinya.
+    - Hasil pembacaan kemudian dikembalikan untuk ditampilkan di UI.
+- **Kesimpulan**: Fitur ini sangat penting untuk menyimpan data sensitif seperti token otentikasi, password, atau API keys, karena data tidak disimpan dalam bentuk teks biasa (plain text) di perangkat.
