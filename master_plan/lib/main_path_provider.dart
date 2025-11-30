@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -29,6 +30,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String documentsPath = '';
   String tempPath = '';
+  late File myFile;
+  String fileText = '';
 
   Future<void> getPaths() async {
     try {
@@ -46,10 +49,34 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<bool> writeFile() async {
+    try {
+      await myFile.writeAsString('Rakai Seto Sembodo, 2341720135');
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> readFile() async {
+    try {
+      String fileContent = await myFile.readAsString();
+      setState(() {
+        fileText = fileContent;
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    getPaths();
+    getPaths().then((_) {
+      myFile = File('$documentsPath/pizzas.txt');
+      writeFile();
+    });
   }
 
   @override
@@ -63,6 +90,11 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Text('Doc path: $documentsPath'),
             Text('Temp path: $tempPath'),
+            ElevatedButton(
+              onPressed: () => readFile(),
+              child: const Text('Read File'),
+            ),
+            Text(fileText),
           ],
         ),
       ),

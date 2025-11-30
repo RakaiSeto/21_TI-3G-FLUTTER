@@ -61,3 +61,14 @@ Kode langkah 5 adalah mendefinisikan konstanta untuk setiap kunci (key) JSON dan
 - `initState()` adalah method yang pertama kali dipanggil ketika widget dibuat (sebelum `build`).
 - Dengan memanggil `getPaths()` di sini, aplikasi akan langsung memulai proses pengambilan path direktori (dokumen dan temporary) segera setelah aplikasi dijalankan.
 - Karena `getPaths()` bersifat *asynchronous* (menggunakan `await`), hasil path tidak langsung tersedia. Namun, setelah path didapatkan, `setState` akan dipanggil untuk memperbarui UI dengan path yang benar.
+
+**Soal 8: Jelaskan maksud kode langkah 13 dan 14 tersebut!**
+(Catatan: Soal ini sepertinya merujuk pada langkah pembuatan `writeFile` dan `readFile` serta pemanggilannya, meskipun nomor langkah di soal mungkin berbeda dengan modul).
+- **`writeFile()`**:
+    - Method ini bersifat `async` karena operasi file (I/O) membutuhkan waktu.
+    - `myFile.writeAsString(...)`: Menulis string (Nama dan NIM) ke dalam file `pizzas.txt`.
+    - Mengembalikan `true` jika berhasil, dan `false` jika terjadi error (misalnya permission denied atau disk full).
+- **`readFile()`**:
+    - `myFile.readAsString()`: Membaca isi file `pizzas.txt` sebagai string.
+    - `setState(...)`: Memperbarui variabel `fileText` dengan isi file yang dibaca, sehingga teks tersebut muncul di layar.
+- **Kesimpulan**: Kedua method ini mendemonstrasikan bagaimana aplikasi Flutter dapat menyimpan data persisten ke dalam sistem file perangkat, yang berguna untuk menyimpan data yang lebih besar atau terstruktur dibandingkan `SharedPreferences`.
