@@ -24,4 +24,18 @@ Saya telah membuat fitur untuk menampilkan daftar tugas (tasks) dalam sebuah ren
     - Saat checkbox dicentang/hapus, status `complete` pada tugas yang bersangkutan diperbarui.
     - Saat deskripsi diubah, properti `description` pada tugas diperbarui.
 - **State Management**: Setiap perubahan data memicu `setState`, yang menyebabkan UI dibangun ulang (rebuild) untuk mencerminkan data `plan` yang baru.
-![Soal 3](master_plan/img/prak-1.gif)
+**Soal 4: Lakukan capture hasil dari Langkah 14 berupa GIF, kemudian jelaskan apa yang telah Anda buat!**
+Saya telah membuat model `Pizza` yang mampu menangani ketidaksesuaian tipe data dari JSON.
+- **Masalah**: JSON seringkali mengirimkan data yang tidak konsisten, misalnya angka dikirim sebagai string (`"123"`), atau field yang seharusnya ada ternyata `null`.
+- **Solusi**:
+    - `int.tryParse()` dan `double.tryParse()`: Digunakan untuk mencoba mengonversi string menjadi angka. Jika gagal, akan mengembalikan `null`.
+    - `??` (Null Coalescing Operator): Digunakan untuk memberikan nilai default jika hasil konversi atau nilai JSON adalah `null`. Contoh: `int.tryParse(...) ?? 0` artinya jika parsing gagal, gunakan nilai 0.
+    - `toString()`: Digunakan untuk memastikan nilai dikonversi menjadi string sebelum diparsing, menghindari error jika nilai aslinya bukan string.
+- **Hasil**: Aplikasi dapat berjalan tanpa crash meskipun data JSON memiliki format yang tidak sesuai dengan tipe data di model Dart.
+```
+Pizza ID: 123
+Pizza Name: Napoli
+Pizza Price: 12.5
+Pizza Image: img.png
+```
+![alt text](master_plan/img/prak-2.png)
