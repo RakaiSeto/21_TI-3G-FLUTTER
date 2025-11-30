@@ -43,3 +43,15 @@ Pizza Image: img.png
 Kode langkah 5 adalah mendefinisikan konstanta untuk setiap kunci (key) JSON dan menggunakannya dalam method `fromJson` dan `toJson`.
 - **Lebih Safe (Aman)**: Menggunakan konstanta menghindari kesalahan pengetikan (typo) yang sering terjadi jika kita menulis string literal berulang kali. Jika kita salah mengetik nama variabel konstanta, compiler akan memberitahu error sebelum aplikasi dijalankan (compile-time error), sedangkan salah ketik string literal baru ketahuan saat runtime.
 - **Lebih Maintainable (Mudah Dipelihara)**: Jika suatu saat nama key JSON berubah dari sisi server (misalnya dari `pizzaName` menjadi `name`), kita hanya perlu mengubah nilai string pada deklarasi konstanta di satu tempat saja. Semua bagian kode yang menggunakan konstanta tersebut akan otomatis menggunakan nilai yang baru, tanpa perlu mencari dan mengganti satu per satu di seluruh file.
+
+**Soal 6: Jelaskan maksud kode langkah 5 dan 13 tersebut!**
+- **Langkah 5 (`readAndWritePreference`)**: Method ini berfungsi untuk membaca dan menulis data ke `SharedPreferences`.
+    - `prefs.getInt('appCounter') ?? 0`: Membaca nilai integer dengan key 'appCounter'. Jika null (belum ada data), gunakan nilai default 0.
+    - `appCounter++`: Menambahkan nilai counter.
+    - `prefs.setInt('appCounter', appCounter)`: Menyimpan nilai counter yang baru ke penyimpanan lokal.
+    - `setState(...)`: Memperbarui state aplikasi agar tampilan counter di layar berubah sesuai nilai terbaru.
+    - Method ini dipanggil di `initState`, sehingga setiap kali aplikasi dijalankan (atau di-restart), counter akan otomatis bertambah satu.
+- **Langkah 13 (`deletePreference`)**: Method ini berfungsi untuk menghapus data dari `SharedPreferences`.
+    - `prefs.clear()`: Menghapus semua data yang tersimpan di SharedPreferences aplikasi ini.
+    - `setState(...)`: Mereset variabel `_appCounter` menjadi 0 dan memperbarui tampilan, sehingga pengguna melihat counter kembali ke angka 0.
+![Soal 6](master_plan/img/prak-4.gif)
