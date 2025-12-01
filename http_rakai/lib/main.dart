@@ -38,6 +38,22 @@ class _MyHomePageState extends State<MyHomePage> {
     return await http.get(url);
   }
 
+  Future<http.Response> postData() async {
+    const authority = '7zrw9.wiremockapi.cloud';
+    const path = '/pizzalist';
+
+    Uri url = Uri.https(authority, path);
+    return await http.post(
+      url,
+      body: json.encode({
+        "name": "Pizza Carbonara",
+        "description": "Delicious pizza with creamy sauce",
+        "price": 15000,
+        "imageUrl": "my_image.png",
+      }),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -52,9 +68,23 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             const Spacer(),
             ElevatedButton(
-              child: const Text('GO!'),
+              child: const Text('GET'),
               onPressed: () {
                 getData()
+                    .then((value) {
+                      result = value.body.toString().substring(0, 450);
+                      setState(() {});
+                    })
+                    .catchError((_) {
+                      result = 'An error occurred';
+                      setState(() {});
+                    });
+              },
+            ),
+            ElevatedButton(
+              child: const Text('POST'),
+              onPressed: () {
+                postData()
                     .then((value) {
                       result = value.body.toString().substring(0, 450);
                       setState(() {});
