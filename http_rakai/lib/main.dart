@@ -54,6 +54,31 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Future<http.Response> putData() async {
+    const authority = '7zrw9.wiremockapi.cloud';
+    const path = '/pizzalist/1';
+
+    Uri url = Uri.https(authority, path);
+    return await http.put(
+      url,
+      body: json.encode({
+        "id": 1,
+        "name": "Pizza Carbonara",
+        "description": "Delicious pizza with creamy sauce",
+        "price": 15000,
+        "imageUrl": "my_image.png",
+      }),
+    );
+  }
+
+  Future<http.Response> deleteData() async {
+    const authority = '7zrw9.wiremockapi.cloud';
+    const path = '/pizzalist/1';
+
+    Uri url = Uri.https(authority, path);
+    return await http.delete(url);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -85,6 +110,34 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('POST'),
               onPressed: () {
                 postData()
+                    .then((value) {
+                      result = value.body.toString().substring(0, 450);
+                      setState(() {});
+                    })
+                    .catchError((_) {
+                      result = 'An error occurred';
+                      setState(() {});
+                    });
+              },
+            ),
+            ElevatedButton(
+              child: const Text('PUT'),
+              onPressed: () {
+                putData()
+                    .then((value) {
+                      result = value.body.toString().substring(0, 450);
+                      setState(() {});
+                    })
+                    .catchError((_) {
+                      result = 'An error occurred';
+                      setState(() {});
+                    });
+              },
+            ),
+            ElevatedButton(
+              child: const Text('DELETE'),
+              onPressed: () {
+                deleteData()
                     .then((value) {
                       result = value.body.toString().substring(0, 450);
                       setState(() {});
